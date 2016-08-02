@@ -9,13 +9,12 @@
 
 int checkaccess(const char* authdbprog, const char* authdbfile, const char* user, const char* operation, const char* path) {
   
-  int status;
+  int status = -1;
   pid_t pid;
   
   switch (pid = fork()) {
     
     case -1:
-      status = -1;
       break;
       
     case 0:
@@ -29,14 +28,9 @@ int checkaccess(const char* authdbprog, const char* authdbfile, const char* user
       _exit(EXIT_FAILURE);
       
     default: 
-      if (waitpid(pid, &status, 0) != pid) {
-        status = -1;
-      }
-      if (WIFEXITED(status)) {
+      if (waitpid(pid, &status, 0) == pid && WIFEXITED(status)) {
         status = WEXITSTATUS(status);
-      } else {
-        status = -1;
-      }
+      } 
         
   }
   return status;
