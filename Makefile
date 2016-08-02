@@ -1,8 +1,8 @@
 
-default:    authzcallout
+default:    gridftp_checkaccess
 
-authzcallout: authzcallout.c
-	gcc -o $@ $@.c
+gridftp_checkaccess: gridftp_checkaccess.c
+	gcc ${CFLAGS} -o $@ $@.c
 
 bindatecallout: $<.c
 	gcc -o $< $@.c
