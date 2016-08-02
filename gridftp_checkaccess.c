@@ -25,7 +25,7 @@ int checkaccess(const char* authdbprog, const char* authdbfile, const char* user
       
       close(1); close(2);
 
-      execl(authdbprog, authdbprog, "-s", "-c", authdbfile, /* "/dev/null" */ user, NOHOST, operation, path, NULL);
+      execl(authdbprog, authdbprog, "-s", "-c", authdbfile /* "/dev/null" */, user, NOHOST, operation, path, NULL);
       _exit(EXIT_FAILURE);
       
     default: 
@@ -34,13 +34,15 @@ int checkaccess(const char* authdbprog, const char* authdbfile, const char* user
       }
       if (WIFEXITED(status)) {
         status = WEXITSTATUS(status);
+      } else {
+        status = -1;
       }
         
   }
   return status;
 }
 
-#ifdef MAIN
+#ifdef GRIDFTP_CHECKACCESS_MAIN
 int main(int argc, char **argv) {
   
   char* authdbprog;
